@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<div id="contenedor1"></div>
+	<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+	<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+	<script type="text/babel">
+		//import React from 'react';
+		//import ReactDOM from "react-dom";
+		
+		class Hi extends React.Component {
+		
+		  constructor(props) {
+			super(props);
+			this.state={momento:0};
+		  }
+		  //this.state = {};
+		  componentWillMount () {
+		    console.log("will");
+			//console.log(this.momento);			
+		  }
+		  componentDidMount() {
+			console.log("montado");
+			this.timerId = window.setInterval(() => {
+			  this.setState({
+				momento :  this.state.momento+1
+			  });   
+			  return 1;
+			}, 1000);
+			//const context = this.refs.canvas.getContext('2d');
+			//context.putImageData(this.state.image, 0, 0);
+		  }
+		  componentDidUpdate(){
+			console.log("update");
+			const canvas = document.createElement('canvas');
+			const context = canvas.getContext('2d');
+			canvas.width = 256;
+			canvas.height = 256;
+			context.rect(20,20,150-this.state.momento,100);//-this.momento,20,150,100);
+			context.stroke();
+			const image = context.getImageData(0, 0, canvas.width, canvas.height);
+			//this.setState({image});
+			
+			console.log(this.state.momento);
+			const context2 = this.refs.canvas.getContext('2d');
+			//if(this.momento%2==0)context.fillStyle ="Red";
+			//else context.fillStyle ="Green";
+			context2.putImageData(image, 0, this.state.momento);
+		  }
+		  
+		  render() {
+			console.log("ey");
+			return (<canvas ref="canvas" />);
+		  }
+		};
+
+		ReactDOM.render(<Hi />, document.getElementById("contenedor1"));
+	</script>
+	
+</body>
+</html>

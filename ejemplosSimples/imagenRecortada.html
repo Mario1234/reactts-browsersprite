@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<img src="moverArriba2.png" id="idImagen"/>
+	<br/>
+	<br/>
+	<br/>
+	<button type="button" onclick="myFunction()">Position background image</button>
+	<canvas id="idLienzo" width="300" height="150" style="border:1px solid #d3d3d3;"/>
+	<canvas id="idLienzo2" style="hidden"/>
+
+	<script>
+	var indice=0;
+	var coordx=0;
+	var coordy=0;
+	function myFunction() {		
+		var alto = 41;
+		var ancho = 27;//217;
+		var posx = (indice)*27;
+		indice++;
+		var posy = 0;
+		var lienzo = document.getElementById("idLienzo");
+		var lienzo2 = document.getElementById("idLienzo2");
+		var imagen = document.getElementById("idImagen");
+		//imagen.style.position="absolute";
+		//imagen.style.clip="rect(0px,54px,41px,27px)";
+		var contexto = lienzo.getContext("2d");
+		var contexto2 = lienzo2.getContext("2d");
+		contexto2.drawImage(imagen,0,0);
+		var imgData = contexto2.getImageData(posx,posy,ancho,alto);
+		contexto.putImageData(imgData, coordx++,coordy++);//-1*posx, -1*posy);
+		//contexto.drawImage(imagen,-27,0);
+		//elem.style.position="absolute";
+		//elem.style.clip="rect(0px,54px,41px,27px)";
+		//elem.style.left="27px"
+		//elem.style.top="0px"; 
+		//elem.style.width="27px"; 
+		//elem.style.height="41px"; 
+	}
+	</script>
+
+</body>
+</html>
