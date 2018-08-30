@@ -1,61 +1,28 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import {SpriteControlado} from "./SpriteControlado";
+import {PersonajeSprite} from "./PersonajeSprite";
 
 let lienzoPrinR : React.RefObject<HTMLCanvasElement> | null;
 lienzoPrinR = React.createRef();
 
-function PersonaCorriendo() {
+function Nazi() {
     return (
-        <SpriteControlado
-            filename="axe8.png"
-            bounds={{ x: 0, y: 0, width: 1024, height: 489 }}
+        <PersonajeSprite
+            filenameArriba="moverArriba2.png"
+            filenameAbajo="moverAbajo2.png"
+            filenameDerecha="moverDerecha2.png"
+            filenameIzquierda="moverIzquierda2.png"
+            bounds={{ x: 0, y: 0, width: 216, height: 41 }}
             speed={400}
             marcosPorFila={8}
-            numeroFilas={3}
-            marcosUltimaFila={6} 
-            posiniTx={0}
-            posiniTy={0}
-            lienzoPrincR={lienzoPrinR}
-            desplazax={10}
-            desplazay={0}/>					
-    )
-}
-function GatoCorriendo() {
-    return (
-        <SpriteControlado
-            filename="cat-running.png"
-            bounds={{ x: 0, y: 0, width: 2048, height: 512 }}
-            speed={400} 
-            marcosPorFila={4} 
-            numeroFilas={2}
-            marcosUltimaFila={4}
-            posiniTx={0}
-            posiniTy={0}
-            lienzoPrincR={null}
-            desplazax={0}
-            desplazay={0}/>					
-    )
-}	
-function Ninja() {
-    return (
-        <SpriteControlado
-            filename="billylee.png"
-            bounds={{ x: 0, y: 0, width: 1010, height: 271 }}
-            speed={400} 
-            marcosPorFila={7}
-            numeroFilas={2}	
-            marcosUltimaFila={5}
-            posiniTx={0}
-            posiniTy={0}
-            lienzoPrincR={null}
-            desplazax={0}
-            desplazay={0} />					
-    )
+            numeroFilas={1}
+            marcosUltimaFila={8} 
+            posinix={200}
+            posiniy={200}
+            lienzoPrincR={lienzoPrinR}/>					
+    );
 }
     
 ReactDOM.render(<canvas ref={lienzoPrinR} width={640} height={425} />, document.getElementById('contenedor1'));
-ReactDOM.render(<PersonaCorriendo />, document.getElementById('contenedor2'));
-ReactDOM.render(<GatoCorriendo />, document.getElementById('contenedor3'));
-ReactDOM.render(<Ninja />, document.getElementById('contenedor4'));
+ReactDOM.render(<Nazi />, document.getElementById('contenedor2'));

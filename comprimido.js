@@ -191,6 +191,66 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
+const SpriteControlado_1 = require("./SpriteControlado");
+class PersonajeSprite extends react_1.default.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            posx: this.props.posinix,
+            posy: this.props.posiniy
+        };
+    }
+    actualizaPosicion(x, y) {
+        console.log("" + x + y);
+        this.setState({
+            posx: x,
+            posy: y
+        });
+    }
+    componentDidMount() {
+    }
+    componentWillUnmount() {
+    }
+    componentDidUpdate(prevProps, prevState) {
+    }
+    render() {
+        console.log("rendPersSpr");
+        return (react_1.default.createElement("div", null,
+            react_1.default.createElement(SpriteControlado_1.SpriteControlado, { filename: this.props.filenameArriba, etiquetaBoton: "Arriba", bounds: this.props.bounds, speed: this.props.speed, marcosPorFila: this.props.marcosPorFila, numeroFilas: this.props.numeroFilas, marcosUltimaFila: this.props.marcosUltimaFila, posx: this.state.posx, posy: this.state.posy, lienzoPrincR: this.props.lienzoPrincR, desplazax: 0, desplazay: -5, funcionActualizaPosicion: (x, y) => this.actualizaPosicion(x, y) }),
+            react_1.default.createElement(SpriteControlado_1.SpriteControlado, { filename: this.props.filenameAbajo, etiquetaBoton: "Abajo", bounds: this.props.bounds, speed: this.props.speed, marcosPorFila: this.props.marcosPorFila, numeroFilas: this.props.numeroFilas, marcosUltimaFila: this.props.marcosUltimaFila, posx: this.state.posx, posy: this.state.posy, lienzoPrincR: this.props.lienzoPrincR, desplazax: 0, desplazay: 5, funcionActualizaPosicion: (x, y) => this.actualizaPosicion(x, y) }),
+            react_1.default.createElement(SpriteControlado_1.SpriteControlado, { filename: this.props.filenameIzquierda, etiquetaBoton: "Izquierda", bounds: this.props.bounds, speed: this.props.speed, marcosPorFila: this.props.marcosPorFila, numeroFilas: this.props.numeroFilas, marcosUltimaFila: this.props.marcosUltimaFila, posx: this.state.posx, posy: this.state.posy, lienzoPrincR: this.props.lienzoPrincR, desplazax: -5, desplazay: 0, funcionActualizaPosicion: (x, y) => this.actualizaPosicion(x, y) }),
+            react_1.default.createElement(SpriteControlado_1.SpriteControlado, { filename: this.props.filenameDerecha, etiquetaBoton: "Derecha", bounds: this.props.bounds, speed: this.props.speed, marcosPorFila: this.props.marcosPorFila, numeroFilas: this.props.numeroFilas, marcosUltimaFila: this.props.marcosUltimaFila, posx: this.state.posx, posy: this.state.posy, lienzoPrincR: this.props.lienzoPrincR, desplazax: 5, desplazay: 0, funcionActualizaPosicion: (x, y) => this.actualizaPosicion(x, y) })));
+    }
+}
+PersonajeSprite.defaultProps = {
+    filenameArriba: "moverArriba2.png",
+    filenameAbajo: "moverArriba2.png",
+    filenameIzquierda: "moverArriba2.png",
+    filenameDerecha: "moverArriba2.png",
+    bounds: {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+    },
+    speed: 300,
+    marcosPorFila: 4,
+    numeroFilas: 1,
+    marcosUltimaFila: 4,
+    posinix: 0,
+    posiniy: 0,
+    lienzoPrincR: -1
+};
+exports.PersonajeSprite = PersonajeSprite;
+;
+
+},{"./SpriteControlado":5,"react":28}],3:[function(require,module,exports){
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = __importDefault(require("react"));
 class Poses extends react_1.default.Component {
     getContextoOculto() {
         return this.contextoOculto;
@@ -253,7 +313,7 @@ class Poses extends react_1.default.Component {
         const estilo2 = {
             display: "none"
         };
-        console.log("num renderizado: " + filename);
+        //console.log("num renderizado: "+filename);
         return (react_1.default.createElement("div", null,
             react_1.default.createElement("img", { ref: this.imagenR, style: estilo2, src: filename }),
             react_1.default.createElement("canvas", { ref: this.lienzoOcultoR, width: this.state.anchoImaPoses, height: this.state.alturaImaPoses, style: estilo2 })));
@@ -262,7 +322,7 @@ class Poses extends react_1.default.Component {
 exports.Poses = Poses;
 ;
 
-},{"react":27}],3:[function(require,module,exports){
+},{"react":28}],4:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -279,33 +339,41 @@ class Sprite extends react_1.default.Component {
         this.lienzoPrincR = null;
         if (this.props.lienzoPrincR != null) {
             this.lienzoPrincR = this.props.lienzoPrincR; //React.createRef();
+            this.estilo = { display: "none" }; //ocultar el lienzo de este Sprite si se le pasa el lienzo principal como parametro
             this.mover = false;
             this.coordx = this.props.posinix;
             this.coordy = this.props.posiniy;
         }
         else {
+            console.log("e");
             this.coordx = 0;
             this.coordy = 0;
         }
         this.posesR = react_1.default.createRef();
         this.anchoMarco = this.props.bounds.width / this.props.marcosPorFila;
         this.altoMarco = this.props.bounds.height / this.props.numeroFilas;
-        this.frame = 0;
         this.timerId = -1;
         this.maxFrames = (this.props.marcosPorFila * this.props.numeroFilas) - (this.props.marcosPorFila - this.props.marcosUltimaFila);
+        this.marco = 0;
         this.state = {
-            posx: -1,
-            posy: -1
+            posPosesX: -1,
+            posPosesY: -1
         };
     }
     setMover(mov) {
         this.mover = mov;
     }
+    getX() {
+        return this.coordx;
+    }
+    getY() {
+        return this.coordy;
+    }
+    //1ra vez se ejecuta: constructor->render->componentDidMount
     componentDidMount() {
         //recoge los contextos de los lienzos
         let lienzo = this.lienzoR.current;
         if (this.lienzoPrincR != null) {
-            this.estilo = { display: "none" }; //ocultar el lienzo de este Sprite si se le pasa el lienzo principal como parametro
             lienzo = this.lienzoPrincR.current;
         }
         if (lienzo != null)
@@ -320,16 +388,18 @@ class Sprite extends react_1.default.Component {
         //comienza el temporizador con eventos de rendering por hacer setState
         //tic del temporizador -> render (pone el canvas) -> componentDidUpdate (pinta en el canvas)
         this.timerId = window.setInterval(() => {
+            //console.log(".");
             if (this.mover) {
-                if (this.frame === this.maxFrames) {
-                    this.frame = 0;
+                if (this.marco === this.maxFrames) {
+                    this.marco = 0;
                 }
                 else {
-                    this.frame++;
+                    this.marco++;
                 }
+                //actualiza la posicion de lectura de la imagen poses, para leer el siguiente marco(pose) del sprite
                 this.setState({
-                    posx: this.anchoMarco * Math.floor(this.frame % this.props.marcosPorFila),
-                    posy: this.altoMarco * Math.floor(this.frame / this.props.marcosPorFila)
+                    posPosesX: this.anchoMarco * Math.floor(this.marco % this.props.marcosPorFila),
+                    posPosesY: this.altoMarco * Math.floor(this.marco / this.props.marcosPorFila)
                 });
             }
             return 1;
@@ -338,17 +408,28 @@ class Sprite extends react_1.default.Component {
     componentWillUnmount() {
         clearInterval(this.timerId);
     }
+    //las demas veces que no son la primera se ejecuta: setState->render->componentDidUpdate
+    //el setState lo puede disparar este objeto o cualquier otro objeto superior en la jerarquia de composicion, como por ejemplo PersonajeSprite
+    //esto ocurre porque los state del objeto superior los pasa hasta este por los props, 
+    //(SpriteControladoProps) posx={this.state.posx} -> (Sprite) posinix: this.props.posx
     componentDidUpdate(prevProps, prevState) {
-        //pinta la pose en el lienzo    
+        //lee la pose de la imagen poses  
         let imagenPose;
         if (this.contextoOculto != null) {
-            imagenPose = this.contextoOculto.getImageData(this.state.posx, this.state.posy, this.anchoMarco, this.altoMarco);
+            //console.log(".");
+            imagenPose = this.contextoOculto.getImageData(this.state.posPosesX, this.state.posPosesY, this.anchoMarco, this.altoMarco);
             //console.log("getIm"+this.state.posx+this.state.posy); 
             //console.log(contextoOculto.canvas.height);
         }
         else
             imagenPose = null;
+        //pinta la pose en el lienzo      
         if (imagenPose != null && this.contexto != null) {
+            //console.log("-"); 
+            let lienzo = this.lienzoR.current;
+            if (lienzo != null && this.mover)
+                this.contexto.clearRect(0, 0, lienzo.width, lienzo.height); //limpia el lienzo
+            //pone la pose en la nueva posicion del lienzo, pareciendo que se mueve el personaje      
             this.contexto.putImageData(imagenPose, this.coordx, this.coordy);
             if (this.props.lienzoPrincR != null) {
                 this.coordx += this.props.desplazax;
@@ -358,9 +439,15 @@ class Sprite extends react_1.default.Component {
             //console.log("sprite: "+this.props.filename+this.state.posx+this.state.posy);  
         }
     }
+    //en este metodo todavia no estan cargados los elementos DOM, por eso se suelen utilizar los metodos componentDidMount
+    //y componentDidUpdate
     render() {
         //console.log("rendSpr");
         //console.log("num renderizado: "+this.props.filename+this.state.frame);
+        if (this.props.lienzoPrincR != null && !this.mover) {
+            this.coordx = this.props.posinix;
+            this.coordy = this.props.posiniy;
+        }
         const posesData = {
             filename: this.props.filename
         };
@@ -370,10 +457,6 @@ class Sprite extends react_1.default.Component {
     }
 }
 Sprite.defaultProps = {
-    frame: {
-        width: 0,
-        height: 0,
-    },
     bounds: {
         x: 0,
         y: 0,
@@ -393,7 +476,7 @@ Sprite.defaultProps = {
 exports.Sprite = Sprite;
 ;
 
-},{"./Poses":2,"react":27}],4:[function(require,module,exports){
+},{"./Poses":3,"react":28}],5:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -405,22 +488,30 @@ class SpriteControlado extends react_1.default.Component {
     constructor(props) {
         super(props);
         this.estilo = {};
-        this.coordx = this.props.posiniTx;
-        this.coordy = this.props.posiniTy;
         this.spriteR = react_1.default.createRef();
         this.botonR = react_1.default.createRef();
         this.estilo = { display: "none" };
         if (this.props.lienzoPrincR != null)
             this.estilo = {};
         this.spriteAux = null;
+        this.moviendo = false;
     }
     mover() {
-        if (this.spriteAux != null)
+        if (this.spriteAux != null) {
             this.spriteAux.setMover(true);
+            this.moviendo = true;
+        }
     }
     parar() {
-        if (this.spriteAux != null)
+        if (this.spriteAux != null) {
             this.spriteAux.setMover(false);
+            this.moviendo = false;
+            //actualiza posicion del objeto personaje, indicando coordenadas donde esta dibujando el sprite en el lienzo
+            this.props.funcionActualizaPosicion(this.spriteAux.getX(), this.spriteAux.getY());
+        }
+    }
+    seEstaMoviendo() {
+        return this.moviendo;
     }
     componentDidMount() {
         this.spriteAux = this.spriteR.current;
@@ -435,8 +526,7 @@ class SpriteControlado extends react_1.default.Component {
     componentDidUpdate(prevProps, prevState) {
     }
     render() {
-        //console.log("rendSpr");
-        //console.log("num renderizado: "+this.props.filename+this.state.frame);
+        console.log("rendSprCont");
         const spriteData = {
             filename: this.props.filename,
             bounds: this.props.bounds,
@@ -444,22 +534,20 @@ class SpriteControlado extends react_1.default.Component {
             marcosPorFila: this.props.marcosPorFila,
             numeroFilas: this.props.numeroFilas,
             marcosUltimaFila: this.props.marcosUltimaFila,
-            posinix: this.coordx,
-            posiniy: this.coordy,
+            posinix: this.props.posx,
+            posiniy: this.props.posy,
             lienzoPrincR: this.props.lienzoPrincR,
             desplazax: this.props.desplazax,
-            desplazay: this.props.desplazay,
+            desplazay: this.props.desplazay
         };
         return (react_1.default.createElement("div", null,
             react_1.default.createElement(Sprite_1.Sprite, Object.assign({ ref: this.spriteR }, spriteData)),
-            react_1.default.createElement("button", { ref: this.botonR, style: this.estilo }, "Andar")));
+            react_1.default.createElement("button", { ref: this.botonR, style: this.estilo }, this.props.etiquetaBoton)));
     }
 }
 SpriteControlado.defaultProps = {
-    frame: {
-        width: 0,
-        height: 0,
-    },
+    etiquetaBoton: "",
+    filename: "moverArriba2.png",
     bounds: {
         x: 0,
         y: 0,
@@ -470,16 +558,17 @@ SpriteControlado.defaultProps = {
     marcosPorFila: 4,
     numeroFilas: 1,
     marcosUltimaFila: 4,
-    posinix: 0,
-    posiniy: 0,
+    posx: 0,
+    posy: 0,
     lienzoPrincR: -1,
     desplazax: 0,
-    desplazay: 0
+    desplazay: 0,
+    funcionActualizaPosicion: null
 };
 exports.SpriteControlado = SpriteControlado;
 ;
 
-},{"./Sprite":3,"react":27}],5:[function(require,module,exports){
+},{"./Sprite":4,"react":28}],6:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -513,7 +602,7 @@ var ExecutionEnvironment = {
 };
 
 module.exports = ExecutionEnvironment;
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 /**
@@ -543,7 +632,7 @@ function camelize(string) {
 }
 
 module.exports = camelize;
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -581,7 +670,7 @@ function camelizeStyleName(string) {
 }
 
 module.exports = camelizeStyleName;
-},{"./camelize":6}],8:[function(require,module,exports){
+},{"./camelize":7}],9:[function(require,module,exports){
 'use strict';
 
 /**
@@ -619,7 +708,7 @@ function containsNode(outerNode, innerNode) {
 }
 
 module.exports = containsNode;
-},{"./isTextNode":16}],9:[function(require,module,exports){
+},{"./isTextNode":17}],10:[function(require,module,exports){
 "use strict";
 
 /**
@@ -656,7 +745,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 };
 
 module.exports = emptyFunction;
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -676,7 +765,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = emptyObject;
 }).call(this,require('_process'))
-},{"_process":1}],11:[function(require,module,exports){
+},{"_process":1}],12:[function(require,module,exports){
 'use strict';
 
 /**
@@ -713,7 +802,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 }
 
 module.exports = getActiveElement;
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 /**
@@ -744,7 +833,7 @@ function hyphenate(string) {
 }
 
 module.exports = hyphenate;
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -781,7 +870,7 @@ function hyphenateStyleName(string) {
 }
 
 module.exports = hyphenateStyleName;
-},{"./hyphenate":12}],14:[function(require,module,exports){
+},{"./hyphenate":13}],15:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -837,7 +926,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 }).call(this,require('_process'))
-},{"_process":1}],15:[function(require,module,exports){
+},{"_process":1}],16:[function(require,module,exports){
 'use strict';
 
 /**
@@ -860,7 +949,7 @@ function isNode(object) {
 }
 
 module.exports = isNode;
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 /**
@@ -883,7 +972,7 @@ function isTextNode(object) {
 }
 
 module.exports = isTextNode;
-},{"./isNode":15}],17:[function(require,module,exports){
+},{"./isNode":16}],18:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -949,7 +1038,7 @@ function shallowEqual(objA, objB) {
 }
 
 module.exports = shallowEqual;
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -1014,7 +1103,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = warning;
 }).call(this,require('_process'))
-},{"./emptyFunction":9,"_process":1}],19:[function(require,module,exports){
+},{"./emptyFunction":10,"_process":1}],20:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -1106,7 +1195,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -1201,7 +1290,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 module.exports = checkPropTypes;
 
 }).call(this,require('_process'))
-},{"./lib/ReactPropTypesSecret":21,"_process":1}],21:[function(require,module,exports){
+},{"./lib/ReactPropTypesSecret":22,"_process":1}],22:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -1215,7 +1304,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 module.exports = ReactPropTypesSecret;
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 (function (process){
 /** @license React v16.4.1
  * react-dom.development.js
@@ -18649,7 +18738,7 @@ module.exports = reactDom;
 }
 
 }).call(this,require('_process'))
-},{"_process":1,"fbjs/lib/ExecutionEnvironment":5,"fbjs/lib/camelizeStyleName":7,"fbjs/lib/containsNode":8,"fbjs/lib/emptyFunction":9,"fbjs/lib/emptyObject":10,"fbjs/lib/getActiveElement":11,"fbjs/lib/hyphenateStyleName":13,"fbjs/lib/invariant":14,"fbjs/lib/shallowEqual":17,"fbjs/lib/warning":18,"object-assign":19,"prop-types/checkPropTypes":20,"react":27}],23:[function(require,module,exports){
+},{"_process":1,"fbjs/lib/ExecutionEnvironment":6,"fbjs/lib/camelizeStyleName":8,"fbjs/lib/containsNode":9,"fbjs/lib/emptyFunction":10,"fbjs/lib/emptyObject":11,"fbjs/lib/getActiveElement":12,"fbjs/lib/hyphenateStyleName":14,"fbjs/lib/invariant":15,"fbjs/lib/shallowEqual":18,"fbjs/lib/warning":19,"object-assign":20,"prop-types/checkPropTypes":21,"react":28}],24:[function(require,module,exports){
 /** @license React v16.4.1
  * react-dom.production.min.js
  *
@@ -18891,7 +18980,7 @@ var vi={createPortal:ui,findDOMNode:function(a){return null==a?null:1===a.nodeTy
 arguments)},unstable_batchedUpdates:bi,unstable_deferredUpdates:Hh,unstable_interactiveUpdates:ei,flushSync:di,unstable_flushControlled:fi,__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{EventPluginHub:Ka,EventPluginRegistry:va,EventPropagators:$a,ReactControlledComponent:Rb,ReactDOMComponentTree:Qa,ReactDOMEventListener:Nd},unstable_createRoot:function(a,b){return new qi(a,!0,null!=b&&!0===b.hydrate)}};ki({findFiberByHostInstance:Na,bundleType:0,version:"16.4.1",rendererPackageName:"react-dom"});
 var Ai={default:vi},Bi=Ai&&vi||Ai;module.exports=Bi.default?Bi.default:Bi;
 
-},{"fbjs/lib/ExecutionEnvironment":5,"fbjs/lib/containsNode":8,"fbjs/lib/emptyFunction":9,"fbjs/lib/emptyObject":10,"fbjs/lib/getActiveElement":11,"fbjs/lib/invariant":14,"fbjs/lib/shallowEqual":17,"object-assign":19,"react":27}],24:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":6,"fbjs/lib/containsNode":9,"fbjs/lib/emptyFunction":10,"fbjs/lib/emptyObject":11,"fbjs/lib/getActiveElement":12,"fbjs/lib/invariant":15,"fbjs/lib/shallowEqual":18,"object-assign":20,"react":28}],25:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -18933,7 +19022,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react-dom.development.js":22,"./cjs/react-dom.production.min.js":23,"_process":1}],25:[function(require,module,exports){
+},{"./cjs/react-dom.development.js":23,"./cjs/react-dom.production.min.js":24,"_process":1}],26:[function(require,module,exports){
 (function (process){
 /** @license React v16.4.1
  * react.development.js
@@ -20423,7 +20512,7 @@ module.exports = react;
 }
 
 }).call(this,require('_process'))
-},{"_process":1,"fbjs/lib/emptyFunction":9,"fbjs/lib/emptyObject":10,"fbjs/lib/invariant":14,"fbjs/lib/warning":18,"object-assign":19,"prop-types/checkPropTypes":20}],26:[function(require,module,exports){
+},{"_process":1,"fbjs/lib/emptyFunction":10,"fbjs/lib/emptyObject":11,"fbjs/lib/invariant":15,"fbjs/lib/warning":19,"object-assign":20,"prop-types/checkPropTypes":21}],27:[function(require,module,exports){
 /** @license React v16.4.1
  * react.production.min.js
  *
@@ -20447,7 +20536,7 @@ _calculateChangedBits:b,_defaultValue:a,_currentValue:a,_currentValue2:a,_change
 b.key&&(g=""+b.key);var l=void 0;a.type&&a.type.defaultProps&&(l=a.type.defaultProps);for(c in b)K.call(b,c)&&!L.hasOwnProperty(c)&&(d[c]=void 0===b[c]&&void 0!==l?l[c]:b[c])}c=arguments.length-2;if(1===c)d.children=e;else if(1<c){l=Array(c);for(var m=0;m<c;m++)l[m]=arguments[m+2];d.children=l}return{$$typeof:t,type:a.type,key:g,ref:h,props:d,_owner:f}},createFactory:function(a){var b=M.bind(null,a);b.type=a;return b},isValidElement:N,version:"16.4.1",__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED:{ReactCurrentOwner:J,
 assign:k}},Y={default:X},Z=Y&&X||Y;module.exports=Z.default?Z.default:Z;
 
-},{"fbjs/lib/emptyFunction":9,"fbjs/lib/emptyObject":10,"fbjs/lib/invariant":14,"object-assign":19}],27:[function(require,module,exports){
+},{"fbjs/lib/emptyFunction":10,"fbjs/lib/emptyObject":11,"fbjs/lib/invariant":15,"object-assign":20}],28:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -20458,7 +20547,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react.development.js":25,"./cjs/react.production.min.js":26,"_process":1}],28:[function(require,module,exports){
+},{"./cjs/react.development.js":26,"./cjs/react.production.min.js":27,"_process":1}],29:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -20466,21 +20555,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
 const react_dom_1 = __importDefault(require("react-dom"));
-const SpriteControlado_1 = require("./SpriteControlado");
+const PersonajeSprite_1 = require("./PersonajeSprite");
 let lienzoPrinR;
 lienzoPrinR = react_1.default.createRef();
-function PersonaCorriendo() {
-    return (react_1.default.createElement(SpriteControlado_1.SpriteControlado, { filename: "axe8.png", bounds: { x: 0, y: 0, width: 1024, height: 489 }, speed: 400, marcosPorFila: 8, numeroFilas: 3, marcosUltimaFila: 6, posiniTx: 0, posiniTy: 0, lienzoPrincR: lienzoPrinR, desplazax: 10, desplazay: 0 }));
-}
-function GatoCorriendo() {
-    return (react_1.default.createElement(SpriteControlado_1.SpriteControlado, { filename: "cat-running.png", bounds: { x: 0, y: 0, width: 2048, height: 512 }, speed: 400, marcosPorFila: 4, numeroFilas: 2, marcosUltimaFila: 4, posiniTx: 0, posiniTy: 0, lienzoPrincR: null, desplazax: 0, desplazay: 0 }));
-}
-function Ninja() {
-    return (react_1.default.createElement(SpriteControlado_1.SpriteControlado, { filename: "billylee.png", bounds: { x: 0, y: 0, width: 1010, height: 271 }, speed: 400, marcosPorFila: 7, numeroFilas: 2, marcosUltimaFila: 5, posiniTx: 0, posiniTy: 0, lienzoPrincR: null, desplazax: 0, desplazay: 0 }));
+function Nazi() {
+    return (react_1.default.createElement(PersonajeSprite_1.PersonajeSprite, { filenameArriba: "moverArriba2.png", filenameAbajo: "moverAbajo2.png", filenameDerecha: "moverDerecha2.png", filenameIzquierda: "moverIzquierda2.png", bounds: { x: 0, y: 0, width: 216, height: 41 }, speed: 400, marcosPorFila: 8, numeroFilas: 1, marcosUltimaFila: 8, posinix: 200, posiniy: 200, lienzoPrincR: lienzoPrinR }));
 }
 react_dom_1.default.render(react_1.default.createElement("canvas", { ref: lienzoPrinR, width: 640, height: 425 }), document.getElementById('contenedor1'));
-react_dom_1.default.render(react_1.default.createElement(PersonaCorriendo, null), document.getElementById('contenedor2'));
-react_dom_1.default.render(react_1.default.createElement(GatoCorriendo, null), document.getElementById('contenedor3'));
-react_dom_1.default.render(react_1.default.createElement(Ninja, null), document.getElementById('contenedor4'));
+react_dom_1.default.render(react_1.default.createElement(Nazi, null), document.getElementById('contenedor2'));
 
-},{"./SpriteControlado":4,"react":27,"react-dom":24}]},{},[28]);
+},{"./PersonajeSprite":2,"react":28,"react-dom":25}]},{},[29]);

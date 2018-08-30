@@ -77,7 +77,7 @@ export class Poses extends React.Component<PosesProps,PosesState>{
 		const estilo2 = {
 			display : "none"
 		};			
-		console.log("num renderizado: "+filename);
+		//console.log("num renderizado: "+filename);
 		
 		return (
 			<div>
