@@ -2,6 +2,8 @@ import React from "react";
 
 export interface PosesProps { 
 	filename: string;
+	anchoPose: number;
+	altoPose: number;
 }
 
 export interface PosesState {  
@@ -15,8 +17,16 @@ export class Poses extends React.Component<PosesProps,PosesState>{
 	private imagenR : React.RefObject<HTMLImageElement>;
 	private contextoOculto: any;
 
-	public getContextoOculto() : any {
-		return this.contextoOculto;
+	public getImagenPose(posxPose:number, posyPose:number) : ImageBitmap | null {
+		let imagenPose : ImageBitmap | null;
+		if(this.contextoOculto!=null){
+			//console.log("dimPose"+this.props.anchoPose+this.props.altoPose);
+			imagenPose = this.contextoOculto.getImageData(posxPose,posyPose,this.props.anchoPose,this.props.altoPose);
+		}
+		else {
+			imagenPose=null;
+		}
+		return imagenPose;
 	}
 	
 	constructor(props:any){

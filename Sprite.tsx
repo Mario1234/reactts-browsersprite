@@ -113,10 +113,7 @@ export class Sprite extends React.Component<SpriteProps, SpriteState> {
 
 		if(lienzo!=null) this.contexto = lienzo.getContext("2d");
     else this.contexto = null;		
-    let pose : Poses | null = this.posesR.current;
-    if(pose!=null){
-      this.contextoOculto = pose.getContextoOculto();
-    }    
+    
     console.log("una  vez");
     //comienza el temporizador con eventos de rendering por hacer setState
     //tic del temporizador -> render (pone el canvas) -> componentDidUpdate (pinta en el canvas)
@@ -150,10 +147,11 @@ export class Sprite extends React.Component<SpriteProps, SpriteState> {
   //(SpriteControladoProps) posx={this.state.posx} -> (Sprite) posinix: this.props.posx
   componentDidUpdate(prevProps: Readonly<SpriteProps>, prevState: Readonly<SpriteState>) {        
     //lee la pose de la imagen poses  
+    let pose : Poses | null = this.posesR.current;
     let imagenPose : ImageBitmap | null;
-    if(this.contextoOculto!=null){
+    if(pose!=null){
       //console.log(".");
-      imagenPose = this.contextoOculto.getImageData(this.state.posPosesX,this.state.posPosesY,this.anchoMarco,this.altoMarco);
+      imagenPose = pose.getImagenPose(this.state.posPosesX,this.state.posPosesY);
       //console.log("getIm"+this.state.posx+this.state.posy); 
       //console.log(contextoOculto.canvas.height);
     }
@@ -184,7 +182,9 @@ export class Sprite extends React.Component<SpriteProps, SpriteState> {
       this.coordy=this.props.posiniy;
     }
     const posesData = {
-      filename: this.props.filename
+      filename: this.props.filename,
+      anchoPose: this.anchoMarco,
+      altoPose: this.altoMarco
     };    
     
     return (

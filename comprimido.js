@@ -252,8 +252,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
 class Poses extends react_1.default.Component {
-    getContextoOculto() {
-        return this.contextoOculto;
+    getImagenPose(posxPose, posyPose) {
+        let imagenPose;
+        if (this.contextoOculto != null) {
+            //console.log("dimPose"+this.props.anchoPose+this.props.altoPose);
+            imagenPose = this.contextoOculto.getImageData(posxPose, posyPose, this.props.anchoPose, this.props.altoPose);
+        }
+        else {
+            imagenPose = null;
+        }
+        return imagenPose;
     }
     constructor(props) {
         super(props);
@@ -380,10 +388,6 @@ class Sprite extends react_1.default.Component {
             this.contexto = lienzo.getContext("2d");
         else
             this.contexto = null;
-        let pose = this.posesR.current;
-        if (pose != null) {
-            this.contextoOculto = pose.getContextoOculto();
-        }
         console.log("una  vez");
         //comienza el temporizador con eventos de rendering por hacer setState
         //tic del temporizador -> render (pone el canvas) -> componentDidUpdate (pinta en el canvas)
@@ -414,10 +418,11 @@ class Sprite extends react_1.default.Component {
     //(SpriteControladoProps) posx={this.state.posx} -> (Sprite) posinix: this.props.posx
     componentDidUpdate(prevProps, prevState) {
         //lee la pose de la imagen poses  
+        let pose = this.posesR.current;
         let imagenPose;
-        if (this.contextoOculto != null) {
+        if (pose != null) {
             //console.log(".");
-            imagenPose = this.contextoOculto.getImageData(this.state.posPosesX, this.state.posPosesY, this.anchoMarco, this.altoMarco);
+            imagenPose = pose.getImagenPose(this.state.posPosesX, this.state.posPosesY);
             //console.log("getIm"+this.state.posx+this.state.posy); 
             //console.log(contextoOculto.canvas.height);
         }
@@ -449,7 +454,9 @@ class Sprite extends react_1.default.Component {
             this.coordy = this.props.posiniy;
         }
         const posesData = {
-            filename: this.props.filename
+            filename: this.props.filename,
+            anchoPose: this.anchoMarco,
+            altoPose: this.altoMarco
         };
         return (react_1.default.createElement("div", null,
             react_1.default.createElement(Poses_1.Poses, Object.assign({ ref: this.posesR }, posesData)),
